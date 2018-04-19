@@ -1,0 +1,2 @@
+sudo hcitool scan
+sudo rfcomm bind /dev/rfcomm0 00:6A:8E:16:C5:77 1

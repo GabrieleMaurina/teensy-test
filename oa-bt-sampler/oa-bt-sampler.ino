@@ -1,10 +1,11 @@
 #define DEBUG Serial
-#define BT Serial4
+#define SERIAL Serial4
 
-#define BOUD_RATE 230400
-#define WAIT 1000
+#define BOUD_RATE 38400//460800
+//#define NEW_BOUD_RATE 460800
+#define WAIT 2000
 
-#define SAMPLE_RATE 8000
+#define SAMPLE_RATE 16000
 #define AUDIO_BLOCK_SAMPLES 128
 
 #define RIGHT 0
@@ -32,9 +33,9 @@ AudioRecordQueue rec;
 
 AudioConnection_F32 mic2hPR(mic, RIGHT, hP, RIGHT);
 AudioConnection_F32 mic2hPL(mic, LEFT, hP, LEFT);
-AudioConnection_F32 mic2conR(mic/*, RIGHT*/, converter/*, RIGHT*/);
+AudioConnection_F32 mic2con(mic/*, RIGHT*/, converter/*, RIGHT*/);
 //AudioConnection_F32 mic2conL(mic, LEFT, converter, LEFT);
-AudioConnection con2recR(converter/*, RIGHT*/, rec/*, RIGHT*/);
+AudioConnection con2rec(converter/*, RIGHT*/, rec/*, RIGHT*/);
 //AudioConnection con2recL(converter, LEFT, rec, LEFT);
 
 
@@ -114,7 +115,7 @@ void turnOnOff()
 void sendAudio()
 {
   if(rec.available()){
-    BT.write((byte*)rec.readBuffer(), AUDIO_BLOCK_SAMPLES * 2);
+    SERIAL.write((byte*)rec.readBuffer(), AUDIO_BLOCK_SAMPLES * 2);
     rec.freeBuffer();
     c++;
   }
@@ -136,13 +137,13 @@ void printLog()
       DEBUG.println(rec.available());
       c = 0;
     }
-    if(BT.available())
+    if(SERIAL.available())
     {
-      DEBUG.write(BT.read());
+      DEBUG.write(SERIAL.read());
     }
     if(DEBUG.available())
     {
-      BT.write(DEBUG.read());
+      SERIAL.write(DEBUG.read());
     }
   #endif
 }
@@ -151,15 +152,17 @@ void printLog()
 
 void initBT()
 {
-  BT.begin(BOUD_RATE);
+  SERIAL.begin(BOUD_RATE);
   delay(WAIT);
   sendBT("STWMOD=0");
+  #ifdef NEW_BOUD_RATE
+    sendBT(String("STBD=") + NEW_BOUD_RATE);
+  #endif
   sendBT("STWMOD=0");
   //sendBT("STNA=teensy");
   sendBT("STAUTO=0");
   sendBT("STOAUT=1");
   //sendBT("STPIN=0000");
-  //sendBT(String("STBD=") + BOUD_RATE);
   sendBT("INQ=1");
 }
 
@@ -168,16 +171,16 @@ void initBT()
 void sendBT(String cmd)
 {
   #ifdef DEBUG
-    DEBUG.print("BT COMMAND:");
+    DEBUG.print("SERIAL COMMAND:");
     DEBUG.println(cmd);
   #endif
   cmd = PRE_CMD + cmd + POST_CMD;
-  BT.print(cmd);
+  SERIAL.print(cmd);
   delay(WAIT);
   #ifdef DEBUG
-    while(BT.available())
+    while(SERIAL.available())
     {
-      DEBUG.write(BT.read());
+      DEBUG.write(SERIAL.read());
     }
   #endif
 }
