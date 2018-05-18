@@ -1,6 +1,4 @@
-#define BAUD_RATE 115200
-
-#define SAMPLE_RATE 8000
+#define SAMPLE_RATE 11025
 #define AUDIO_BLOCK_SAMPLES 128
 
 #define RIGHT 0
@@ -23,12 +21,11 @@ AudioRecordQueue_F32 rec(audioSettings);
 
 AudioConnection_F32 mic2hPR(mic, RIGHT, hP, RIGHT);
 AudioConnection_F32 mic2hPL(mic, LEFT, hP, LEFT);
-AudioConnection_F32 mic2recR(mic, RIGHT, rec, RIGHT);
-AudioConnection_F32 mic2recL(mic, LEFT, rec, LEFT);
+AudioConnection_F32 mic2recR(mic, rec);
 
 void setup()
 {
-  Serial.begin(BAUD_RATE);
+  Serial.begin(0);
 
   pinMode(SWITCH, INPUT);
 

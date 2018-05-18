@@ -1,18 +1,18 @@
 #define DEBUG Serial
 #define SERIAL Serial4
 
-#define BOUD_RATE 38400//460800
-//#define NEW_BOUD_RATE 460800
+#define BOUD_RATE 230400
+//#define NEW_BOUD_RATE 230400
 #define WAIT 2000
 
-#define SAMPLE_RATE 16000
+#define SAMPLE_RATE 11025
 #define AUDIO_BLOCK_SAMPLES 128
 
 #define RIGHT 0
 #define LEFT 1
 
 #define SWITCH 29
-//#define POT A14
+#define POT A14
 
 #define PRE_CMD "\r\n+"
 #define POST_CMD "\r\n"
@@ -33,10 +33,8 @@ AudioRecordQueue rec;
 
 AudioConnection_F32 mic2hPR(mic, RIGHT, hP, RIGHT);
 AudioConnection_F32 mic2hPL(mic, LEFT, hP, LEFT);
-AudioConnection_F32 mic2con(mic/*, RIGHT*/, converter/*, RIGHT*/);
-//AudioConnection_F32 mic2conL(mic, LEFT, converter, LEFT);
-AudioConnection con2rec(converter/*, RIGHT*/, rec/*, RIGHT*/);
-//AudioConnection con2recL(converter, LEFT, rec, LEFT);
+AudioConnection_F32 mic2con(mic, converter);
+AudioConnection con2rec(converter, rec);
 
 
 
