@@ -1,12 +1,12 @@
 To set up environment:
 
-Install arduino
+1) Install arduino
 https://www.arduino.cc/en/Main/Software
 
-Install teensyduino
+2) Install teensyduino
 https://www.pjrc.com/teensy/td_download.html
 
-Update CMSIS
+3) Update CMSIS
 https://forum.pjrc.com/threads/40590-Teensy-Convolution-SDR-(Software-Defined-Radio)?p=129081&viewfull=1#post129081
 
 {
@@ -57,3 +57,7 @@ https://forum.pjrc.com/threads/40590-Teensy-Convolution-SDR-(Software-Defined-Ra
 	That's it! 
 	Jan
 }
+
+4) Install AnalyzeFFT_F32
+Copy files in OpenAudio Folder
+Inlcude new files in OpenAudio.h
